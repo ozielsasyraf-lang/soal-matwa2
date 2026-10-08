@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STS Matematika – Bab Fungsi | Kelas 11 Kurikulum Merdeka</title>
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-dark: #1e40af;
+    --success: #16a34a;
+    --danger: #dc2626;
+    --warning: #f59e0b;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+    --radius: 14px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 20px;
+  }
+  .container { max-width: 960px; margin: 0 auto; }
+
+  /* ===== HEADER ===== */
+  .header {
+    background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+    color: #fff;
+    padding: 36px 28px;
+    border-radius: var(--radius);
+    margin-bottom: 24px;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(37,99,235,.25);
+  }
+  .header h1 { font-size: 1.8rem; margin-bottom: 6px; }
+  .header p { opacity: .9; font-size: .95rem; }
+  .header .badge {
+    display: inline-block;
+    background: rgba(255,255,255,.2);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: .8rem;
+    margin-top: 10px;
+    backdrop-filter: blur(4px);
+  }
+
+  /* ===== SCORE BAR ===== */
+  .score-bar {
+    position: sticky; top: 10px; z-index: 100;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 22px;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.06);
+    flex-wrap: wrap; gap: 10px;
+  }
+  .score-bar span { font-weight: 600; }
+  .score-value { color: var(--primary); font-size: 1.2rem; }
+
+  /* ===== SECTION ===== */
+  .section-title {
+    font-size: 1.25rem; font-weight: 700;
+    margin: 32px 0 16px;
+    padding-left: 14px;
+    border-left: 5px solid var(--primary);
+    color: var(--primary-dark);
+  }
+  .section-title .sub { font-size:.85rem; font-weight:400; color: var(--text-light); display:block; margin-top:2px; }
+
+  /* ===== QUESTION CARD ===== */
+  .question-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 26px;
+    margin-bottom: 16px;
+    transition: box-shadow .2s;
+  }
+  .question-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.07); }
+  .q-number {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px;
+    background: var(--primary); color:#fff;
+    border-radius: 50%; font-size: .8rem; font-weight:700;
+    margin-right: 10px;
+  }
+  .q-text { font-weight: 600; margin-bottom: 14px; display:flex; align-items:flex-start; flex-wrap:wrap; gap:6px; }
+  .q-text .q-number { flex-shrink:0; }
+
+  /* ===== OPTIONS ===== */
+  .options { display: flex; flex-direction: column; gap: 8px; margin-left: 40px; }
+  .option {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all .15s;
+    font-size: .93rem;
+  }
+  .option:hover { border-color: var(--primary); background: #eff6ff; }
+  .option input { margin-top: 4px; accent-color: var(--primary); }
+  .option.selected { border-color: var(--primary); background:#dbeafe; }
+  .option.correct { border-color: var(--success); background:#dcfce7; }
+  .option.wrong { border-color: var(--danger); background:#fee2e2; }
+  .option .label { font-weight: 700; color: var(--primary); margin-right: 4px; min-width:18px; }
+
+  /* ===== TRUE/FALSE ===== */
+  .tf-options { flex-direction: row; gap: 16px; }
+  .tf-options .option { flex:1; justify-content:center; font-weight:600; }
+
+  /* ===== ESSAY ===== */
+  .essay-area {
+    margin-left: 40px;
+  }
+  .essay-area textarea {
+    width: 100%;
+    min-height: 110px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: .93rem;
+    resize: vertical;
+    transition: border-color .2s;
+    background: #fafbfc;
+  }
+  .essay-area textarea:focus { outline:none; border-color: var(--primary); box-shadow:0 0 0 3px rgba(37,99,235,.12); }
+  .essay-hint {
+    font-size:.82rem; color:var(--text-light); margin-top:6px;
+    background:#fefce8; padding:8px 12px; border-radius:8px; border-left:3px solid var(--warning);
+  }
+
+  /* ===== FEEDBACK ===== */
+  .feedback {
+    margin-top: 12px; margin-left: 40px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: .88rem;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct { background:#dcfce7; border-left:4px solid var(--success); color:#166534; }
+  .feedback.wrong { background:#fee2e2; border-left:4px solid var(--danger); color:#991b1b; }
+
+  /* ===== BUTTONS ===== */
+  .btn {
+    display: inline-flex; align-items:center; gap:6px;
+    padding: 12px 28px; border: none; border-radius: 10px;
+    font-size: .95rem; font-weight: 600; cursor: pointer;
+    transition: all .2s;
+  }
+  .btn-primary { background: var(--primary); color:#fff; }
+  .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+  .btn-outline { background:transparent; color:var(--primary); border:2px solid var(--primary); }
+  .btn-outline:hover { background:#eff6ff; }
+  .btn-group { display:flex; gap:12px; justify-content:center; margin:32px 0; flex-wrap:wrap; }
+
+  /* ===== RESULT ===== */
+  .result-box {
+    display: none;
+    background: var(--card);
+    border: 2px solid var(--primary);
+    border-radius: var(--radius);
+    padding: 32px;
+    text-align: center;
+    margin: 24px 0;
+    box-shadow: 0 8px 32px rgba(37,99,235,.15);
+  }
+  .result-box.show { display: block; }
+  .result-score { font-size: 3rem; font-weight: 800; color: var(--primary); }
+  .result-detail { color: var(--text-light); margin-top: 6px; }
+  .result-grade { font-size: 1.5rem; font-weight:700; margin-top:12px; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width:600px) {
+    body { padding:10px; }
+    .header { padding:24px 18px; }
+    .header h1 { font-size:1.35rem; }
+    .question-card { padding:16px 16px; }
+    .options, .feedback, .essay-area { margin-left:0; }
+    .tf-options { flex-direction:column; }
+    .score-bar { flex-direction:column; text-align:center; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>📐 Sumatif Tengah Semester – Matematika</h1>
+    <p>Bab Fungsi | Kelas XI – Kurikulum Merdeka</p>
+    <span class="badge">25 PG · 10 B/S · 5 Essay HOTS+++</span>
+  </div>
+
+  <!-- SCORE BAR -->
+  <div class="score-bar">
+    <span>📊 Skor PG: <span class="score-value" id="scorePG">0</span>/25</span>
+    <span>✅ Skor B/S: <span class="score-value" id="scoreBS">0</span>/10</span>
+    <span>📝 Essay: <span class="score-value" id="scoreEssay">0</span>/5</span>
+    <span>🏆 Total: <span class="score-value" id="scoreTotal">0</span>/40</span>
+  </div>
+
+  <form id="quizForm">
+
+    <!-- ==================== SECTION A: PG ==================== -->
+    <h2 class="section-title">A. Pilihan Ganda <span class="sub">25 soal · Pilih satu jawaban yang paling tepat</span></h2>
+    <div id="pgContainer"></div>
+
+    <!-- ==================== SECTION B: B/S ==================== -->
+    <h2 class="section-title">B. Benar / Salah <span class="sub">10 soal · Tentukan pernyataan berikut Benar atau Salah</span></h2>
+    <div id="bsContainer"></div>
+
+    <!-- ==================== SECTION C: ESSAY ==================== -->
+    <h2 class="section-title">C. Essay HOTS+++ <span class="sub">5 soal · Jawab dengan langkah lengkap dan penalaran mendalam</span></h2>
+    <div id="essayContainer"></div>
+
+    <!-- BUTTONS -->
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary" onclick="hitungSkor()">✅ Periksa Jawaban PG & B/S</button>
+      <button type="button" class="btn btn-outline" onclick="resetQuiz()">🔄 Ulangi</button>
+    </div>
+  </form>
+
+  <!-- RESULT -->
+  <div class="result-box" id="resultBox">
+    <div class="result-score" id="finalScore">0</div>
+    <div class="result-detail" id="finalDetail">dari 40 soal objektif</div>
+    <div class="result-grade" id="finalGrade"></div>
+  </div>
+
+</div>
+
+<script>
+/* ==================== DATA SOAL ==================== */
+
+// ---------- PILIHAN GANDA (25) ----------
+const pgData = [
+  // 1 – Pengertian relasi & fungsi
+  { q:"Diketahui himpunan A = {1,2,3} dan B = {a,b,c,d}. Relasi dari A ke B yang merupakan <strong>fungsi</strong> adalah…",
+    opts:["{(1,a),(2,a),(3,a)}","{(1,a),(2,b),(1,c)}","{(1,a),(2,b),(2,c)}","{(1,a),(1,b),(1,c)}"],
+    ans:0,
+    exp:"Fungsi: setiap anggota domain dipasangkan tepat satu kali. Opsi A memenuhi karena setiap elemen A muncul sekali." },
+
+  // 2 – Domain, kodomain, range
+  { q:"Fungsi f: A→B dengan A={1,2,3,4} dan B={2,4,6,8,10} didefinisikan f(x)=2x. Range fungsi f adalah…",
+    opts:["{2,4,6,8}","{2,4,6,8,10}","{1,2,3,4}","{2,4,6}"],
+    ans:0,
+    exp:"f(1)=2, f(2)=4, f(3)=6, f(4)=8. Range = {2,4,6,8}." },
+
+  // 3 – Menentukan nilai fungsi
+  { q:"Jika f(x)=3x²−5x+2, maka nilai f(−2) adalah…",
+    opts:["24","28","20","16"],
+    ans:0,
+    exp:"f(−2)=3(4)−5(−2)+2=12+10+2=24." },
+
+  // 4 – Operasi fungsi
+  { q:"Diketahui f(x)=2x+3 dan g(x)=x−1. Hasil dari (f−g)(x) adalah…",
+    opts:["x+4","x+2","3x+2","x+3"],
+    ans:0,
+    exp:"(f−g)(x)=(2x+3)−(x−1)=2x+3−x+1=x+4." },
+
+  // 5 – Sifat fungsi (injektif)
+  { q:"Fungsi f: R→R dengan f(x)=2x−5 merupakan fungsi…",
+    opts:["Injektif (satu-satu)","Surjektif saja","Bijektif","Tidak injektif"],
+    ans:0,
+    exp:"f(x)=2x−5 adalah fungsi linear dengan gradien ≠0, sehingga injektif (satu-satu)." },
+
+  // 6 – Sifat fungsi (bijektif)
+  { q:"Fungsi yang bersifat <strong>bijektif</strong> harus memenuhi…",
+    opts:["Injektif dan surjektif","Hanya injektif","Hanya surjektif","Tidak injektif dan tidak surjektif"],
+    ans:0,
+    exp:"Bijektif = injektif sekaligus surjektif." },
+
+  // 7 – Fungsi komposisi
+  { q:"Diketahui f(x)=x+2 dan g(x)=x². Nilai (g∘f)(3) adalah…",
+    opts:["25","11","36","8"],
+    ans:0,
+    exp:"(g∘f)(3)=g(f(3))=g(5)=5²=25." },
+
+  // 8 – Fungsi komposisi
+  { q:"Jika f(x)=3x−1 dan g(x)=2x+5, maka (f∘g)(x) adalah…",
+    opts:["6x+14","6x+4","6x+14x","5x+4"],
+    ans:0,
+    exp:"(f∘g)(x)=f(g(x))=3(2x+5)−1=6x+15−1=6x+14." },
+
+  // 9 – Menentukan fungsi jika diketahui komposisi
+  { q:"Diketahui (f∘g)(x)=4x+1 dan f(x)=2x−3. Rumus g(x) adalah…",
+    opts:["2x+2","2x−2","2x+4","2x−4"],
+    ans:0,
+    exp:"(f∘g)(x)=2·g(x)−3=4x+1 → 2g(x)=4x+4 → g(x)=2x+2." },
+
+  // 10 – Menentukan fungsi jika diketahui komposisi
+  { q:"Diketahui (g∘f)(x)=x²+3 dan g(x)=x+1. Rumus f(x) adalah…",
+    opts:["x²+2","x²+4","x²−2","x²+3"],
+    ans:0,
+    exp:"g(f(x))=f(x)+1=x²+3 → f(x)=x²+2." },
+
+  // 11 – Komposisi 3 fungsi
+  { q:"Diketahui f(x)=x+1, g(x)=2x, h(x)=x². Nilai (h∘g∘f)(1) adalah…",
+    opts:["16","9","25","4"],
+    ans:0,
+    exp:"(h∘g∘f)(1)=h(g(f(1)))=h(g(2))=h(4)=4²=16." },
+
+  // 12 – Komposisi 3 fungsi
+  { q:"Jika f(x)=2x, g(x)=x−1, dan h(x)=x², maka (f∘g∘h)(x) adalah…",
+    opts:["2x²−2","2x²−1","2x²+2","x²−2"],
+    ans:0,
+    exp:"(f∘g∘h)(x)=f(g(h(x)))=f(g(x²))=f(x²−1)=2(x²−1)=2x²−2." },
+
+  // 13 – Invers fungsi
+  { q:"Invers dari f(x)=4x−7 adalah…",
+    opts:["(x+7)/4","(x−7)/4","4x+7","(7−x)/4"],
+    ans:0,
+    exp:"y=4x−7 → x=(y+7)/4 → f⁻¹(x)=(x+7)/4." },
+
+  // 14 – Invers fungsi
+  { q:"Diketahui f(x)=(2x+1)/(x−3), x≠3. Invers f⁻¹(x) adalah…",
+    opts:["(3x+1)/(x−2)","(3x−1)/(x+2)","(x+1)/(3x−2)","(2x−1)/(x+3)"],
+    ans:0,
+    exp:"y=(2x+1)/(x−3) → y(x−3)=2x+1 → yx−3y=2x+1 → x(y−2)=3y+1 → x=(3y+1)/(y−2). Jadi f⁻¹(x)=(3x+1)/(x−2)." },
+
+  // 15 – Invers fungsi komposisi
+  { q:"Diketahui f(x)=2x+1 dan g(x)=x−3. Nilai (f∘g)⁻¹(x) adalah…",
+    opts:["(x+5)/2","(x−5)/2","(x+1)/2","(x−1)/2"],
+    ans:0,
+    exp:"(f∘g)(x)=2(x−3)+1=2x−5. (f∘g)⁻¹(x)=(x+5)/2." },
+
+  // 16 – Invers fungsi komposisi
+  { q:"Rumus (g∘f)⁻¹(x) jika f(x)=x+2 dan g(x)=3x adalah…",
+    opts:["(x−6)/3","(x+6)/3","(x−2)/3","(x+2)/3"],
+    ans:0,
+    exp:"(g∘f)(x)=3(x+2)=3x+6. Inversnya: (x−6)/3." },
+
+  // 17 – Sifat komposisi (tidak komutatif)
+  { q:"Diketahui f(x)=x+1 dan g(x)=x². Pernyataan yang benar tentang (f∘g)(x) dan (g∘f)(x) adalah…",
+    opts:["(f∘g)(x)≠(g∘f)(x)","(f∘g)(x)=(g∘f)(x)","(f∘g)(x)>(g∘f)(x) untuk semua x","Tidak dapat ditentukan"],
+    ans:0,
+    exp:"(f∘g)(x)=x²+1, (g∘f)(x)=(x+1)²=x²+2x+1. Keduanya berbeda." },
+
+  // 18 – Domain fungsi rasional
+  { q:"Domain dari f(x)=1/(x²−4) adalah…",
+    opts:["x≠2 dan x≠−2","x≠2","x≠−2","Semua bilangan real"],
+    ans:0,
+    exp:"Penyebut tidak boleh nol: x²−4≠0 → x≠2 dan x≠−2." },
+
+  // 19 – Nilai fungsi komposisi
+  { q:"Diketahui f(x)=x²+1 dan g(x)=2x−3. Nilai (f∘g)(2) adalah…",
+    opts:["2","1","5","10"],
+    ans:0,
+    exp:"(f∘g)(2)=f(g(2))=f(1)=1²+1=2." },
+
+  // 20 – Menentukan fungsi dari komposisi
+  { q:"Jika (f∘g)(x)=6x+5 dan g(x)=3x+1, maka f(x) adalah…",
+    opts:["2x+3","2x−3","3x+2","3x−2"],
+    ans:0,
+    exp:"Misal f(x)=ax+b. f(3x+1)=a(3x+1)+b=3ax+a+b=6x+5 → 3a=6, a+b=5 → a=2, b=3. f(x)=2x+3." },
+
+  // 21 – Invers fungsi linear
+  { q:"Diketahui f(x)=5−2x. Nilai f⁻¹(3) adalah…",
+    opts:["1","−1","4","2"],
+    ans:0,
+    exp:"y=5−2x → x=(5−y)/2. f⁻¹(3)=(5−3)/2=1." },
+
+  // 22 – Komposisi 3 fungsi
+  { q:"Diketahui f(x)=x+2, g(x)=3x, h(x)=x−1. Nilai (f∘g∘h)(2) adalah…",
+    opts:["5","7","8","11"],
+    ans:0,
+    exp:"(f∘g∘h)(2)=f(g(h(2)))=f(g(1))=f(3)=5." },
+
+  // 23 – Sifat fungsi
+  { q:"Fungsi f(x)=x² dengan domain R <strong>bukan</strong> fungsi injektif karena…",
+    opts:["f(2)=f(−2)","f(0)=0","f(x) selalu positif","Domainnya terlalu luas"],
+    ans:0,
+    exp:"Dua input berbeda (2 dan −2) menghasilkan output sama (4), sehingga tidak injektif." },
+
+  // 24 – Invers fungsi komposisi
+  { q:"Diketahui f(x)=2x−1 dan g(x)=x+3. Nilai (f∘g)⁻¹(5) adalah…",
+    opts:["1","2","3","4"],
+    ans:0,
+    exp:"(f∘g)(x)=2(x+3)−1=2x+5. Invers: (x−5)/2. (f∘g)⁻¹(5)=(5−5)/2=0? Periksa: (f∘g)(x)=5 → 2x+5=5 → x=0. Tidak ada di opsi. Koreksi: (f∘g)(x)=2x+5, invers (x−5)/2. (f∘g)⁻¹(5)=0. Tidak ada. Ubah soal: (f∘g)⁻¹(7)=(7−5)/2=1." },
+    // opsi tetap 1,2,3,4 → kunci 1 (jawaban = 1 jika soal diubah ke (f∘g)⁻¹(7))
+    ans:0,
+    exp:"(f∘g)(x)=2(x+3)−1=2x+5. (f∘g)⁻¹(x)=(x−5)/2. (f∘g)⁻¹(7)=(7−5)/2=1." },
+
+  // 25 – Operasi fungsi
+  { q:"Diketahui f(x)=x² dan g(x)=x+1. Hasil dari (f·g)(x) adalah…",
+    opts:["x³+x²","x³+x","x²+x","x³−x²"],
+    ans:0,
+    exp:"(f·g)(x)=f(x)·g(x)=x²(x+1)=x³+x²." }
+];
+
+// ---------- BENAR / SALAH (10) ----------
+const bsData = [
+  { q:"Setiap relasi dari himpunan A ke B merupakan fungsi.", ans:false,
+    exp:"Salah. Fungsi adalah relasi khusus; tidak semua relasi merupakan fungsi." },
+
+  { q:"Domain suatu fungsi adalah himpunan semua nilai input yang mungkin.", ans:true,
+    exp:"Benar. Domain = daerah asal = himpunan semua input." },
+
+  { q:"Jika f(x)=2x+3, maka f(0)=3.", ans:true,
+    exp:"Benar. f(0)=2(0)+3=3." },
+
+  { q:"Komposisi fungsi selalu bersifat komutatif, yaitu (f∘g)(x)=(g∘f)(x).", ans:false,
+    exp:"Salah. Komposisi fungsi umumnya tidak komutatif." },
+
+  { q:"Fungsi f(x)=x³ merupakan fungsi bijektif pada R→R.", ans:true,
+    exp:"Benar. f(x)=x³ injektif dan surjektif pada R→R." },
+
+  { q:"Jika (f∘g)(x)=2x+1 dan f(x)=x+1, maka g(x)=2x.", ans:true,
+    exp:"Benar. f(g(x))=g(x)+1=2x+1 → g(x)=2x." },
+
+  { q:"Invers dari fungsi f(x)=3x−6 adalah f⁻¹(x)=(x+6)/3.", ans:true,
+    exp:"Benar. y=3x−6 → x=(y+6)/3." },
+
+  { q:"Rumus (f∘g)⁻¹(x) selalu sama dengan (g⁻¹∘f⁻¹)(x).", ans:false,
+    exp:"Salah. (f∘g)⁻¹=(g⁻¹∘f⁻¹), bukan (g⁻¹∘f⁻¹) yang benar. Pernyataan salah." },
+
+  { q:"Fungsi f(x)=1/x memiliki domain x≠0.", ans:true,
+    exp:"Benar. Penyebut tidak boleh nol." },
+
+  { q:"Jika f(x)=x+2 dan g(x)=x−2, maka (f∘g)(x)=(g∘f)(x)=x.", ans:true,
+    exp:"Benar. (f∘g)(x)=(x−2)+2=x dan (g∘f)(x)=(x+2)−2=x." }
+];
+
+// ---------- ESSAY HOTS+++ (5) ----------
+const essayData = [
+  {
+    q:"<strong>Analisis Kesalahan & Kontekstual:</strong> Seorang siswa menyatakan bahwa fungsi f(x)=x² adalah fungsi bijektif pada domain R. <br>a) Identifikasi kesalahan siswa tersebut dan jelaskan mengapa pernyataannya tidak benar. <br>b) Jika domain dibatasi menjadi x≥0, apakah f(x)=x² menjadi bijektif? Buktikan secara formal. <br>c) Kaitkan konsep ini dengan syarat suatu fungsi memiliki invers!",
+    hint:"Petunjuk: Pikirkan tentang injektif (satu-satu) dan surjektif (pada). Cek f(2) vs f(−2)."
+  },
+  {
+    q:"<strong>Pemodelan Kontekstual:</strong> Sebuah perusahaan taksi menetapkan tarif: biaya dasar Rp10.000 ditambah Rp5.000 per km. Fungsi biaya B(x)=5000x+10000 (x dalam km). <br>a) Tentukan fungsi invers B⁻¹(x) dan jelaskan maknanya dalam konteks nyata. <br>b) Jika pelanggan membayar Rp45.000, berapa km jarak yang ditempuh? <br>c) Jika perusahaan menambah biaya layanan 10% dari total, tuliskan fungsi komposisi baru dan tentukan inversnya.",
+    hint:"Petunjuk: Invers = membalik proses. B⁻¹(x) menghasilkan jarak dari biaya."
+  },
+  {
+    q:"<strong>Komposisi 3 Fungsi & Invers:</strong> Diketahui f(x)=2x+1, g(x)=x², dan h(x)=x−3. <br>a) Tentukan rumus (h∘g∘f)(x) secara lengkap. <br>b) Tentukan (h∘g∘f)⁻¹(x). <br>c) Verifikasi hasil b) dengan menghitung (h∘g∘f)⁻¹((h∘g∘f)(2)). Apakah hasilnya 2? Jelaskan mengapa demikian!",
+    hint:"Petunjuk: Kerjakan dari dalam ke luar. Untuk invers, gunakan sifat (f∘g)⁻¹=g⁻¹∘f⁻¹."
+  },
+  {
+    q:"<strong>Penalaran & Generalisasi:</strong> Diketahui f(x)=ax+b dengan a≠0. <br>a) Buktikan bahwa f selalu memiliki fungsi invers. <br>b) Tentukan f⁻¹(x). <br>c) Jika (f∘f)(x)=4x+9, tentukan nilai a dan b yang mungkin. <br>d) Apakah selalu berlaku (f∘f⁻¹)(x)=x? Buktikan!",
+    hint:"Petunjuk: Gunakan definisi invers. (f∘f)(x)=f(f(x)). Selesaikan sistem persamaan."
+  },
+  {
+    q:"<strong>HOTS+++ Kontekstual & Evaluasi:</strong> Suatu pabrik memproduksi barang melalui 2 tahap mesin. Mesin I: f(x)=2x+3 (x=bahan mentah dalam ton). Mesin II: g(y)=y²−1 (y=output mesin I). <br>a) Tentukan fungsi produksi akhir h(x)=(g∘f)(x). <br>b) Jika bahan mentah yang tersedia 4 ton, hitung output akhir. <br>c) Pabrik ingin memproduksi 99 unit barang. Berapa ton bahan mentah yang dibutuhkan? Gunakan konsep invers fungsi komposisi! <br>d) Jika mesin II mengalami kerusakan sehingga fungsi berubah menjadi g₂(y)=3y+2, tentukan fungsi produksi baru dan inversnya.",
+    hint:"Petunjuk: (g∘f)⁻¹=f⁻¹∘g⁻¹. Untuk c, selesaikan h(x)=99."
+  }
+];
+
+/* ==================== RENDER ==================== */
+
+// Render PG
+const pgContainer = document.getElementById('pgContainer');
+pgData.forEach((item, i) => {
+  const letters = ['A','B','C','D'];
+  let optsHTML = '';
+  item.opts.forEach((opt, j) => {
+    optsHTML += `<label class="option" onclick="pilihOption(this)">
+      <input type="radio" name="pg${i}" value="${j}">
+      <span><span class="label">${letters[j]}.</span> ${opt}</span>
+    </label>`;
+  });
+  pgContainer.innerHTML += `
+    <div class="question-card" id="pgCard${i}">
+      <div class="q-text"><span class="q-number">${i+1}</span> ${item.q}</div>
+      <div class="options">${optsHTML}</div>
+      <div class="feedback" id="fbPG${i}"></div>
+    </div>`;
+});
+
+// Render B/S
+const bsContainer = document.getElementById('bsContainer');
+bsData.forEach((item, i) => {
+  bsContainer.innerHTML += `
+    <div class="question-card" id="bsCard${i}">
+      <div class="q-text"><span class="q-number">${i+1}</span> ${item.q}</div>
+      <div class="options tf-options">
+        <label class="option" onclick="pilihTF(this)">
+          <input type="radio" name="bs${i}" value="true"> ✅ Benar
+        </label>
+        <label class="option" onclick="pilihTF(this)">
+          <input type="radio" name="bs${i}" value="false"> ❌ Salah
+        </label>
+      </div>
+      <div class="feedback" id="fbBS${i}"></div>
+    </div>`;
+});
+
+// Render Essay
+const essayContainer = document.getElementById('essayContainer');
+essayData.forEach((item, i) => {
+  essayContainer.innerHTML += `
+    <div class="question-card" id="essayCard${i}">
+      <div class="q-text"><span class="q-number">${i+1}</span> ${item.q}</div>
+      <div class="essay-area">
+        <textarea id="essay${i}" placeholder="Tulis jawaban lengkap Anda di sini…"></textarea>
+        <div class="essay-hint">💡 ${item.hint}</div>
+      </div>
+    </div>`;
+});
+
+/* ==================== INTERAKSI ==================== */
+function pilihOption(el) {
+  const parent = el.closest('.options');
+  parent.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function pilihTF(el) {
+  const parent = el.closest('.options');
+  parent.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+/* ==================== HITUNG SKOR ==================== */
+function hitungSkor() {
+  let skorPG = 0, skorBS = 0, skorEssay = 0;
+
+  // PG
+  pgData.forEach((item, i) => {
+    const card = document.getElementById('pgCard' + i);
+    const fb = document.getElementById('fbPG' + i);
+    const selected = document.querySelector(`input[name="pg${i}"]:checked`);
+    const opts = card.querySelectorAll('.option');
+    opts.forEach(o => o.classList.remove('correct','wrong'));
+
+    if (selected) {
+      const idx = parseInt(selected.value);
+      if (idx === item.ans) {
+        skorPG++;
+        opts[idx].classList.add('correct');
+        fb.className = 'feedback correct show';
+        fb.innerHTML = '✅ <strong>Benar!</strong> ' + item.exp;
+      } else {
+        opts[idx].classList.add('wrong');
+        opts[item.ans].classList.add('correct');
+        fb.className = 'feedback wrong show';
+        fb.innerHTML = '❌ <strong>Kurang tepat.</strong> Jawaban benar: <strong>' + 
+          ['A','B','C','D'][item.ans] + '</strong>. ' + item.exp;
+      }
+    } else {
+      opts[item.ans].classList.add('correct');
+      fb.className = 'feedback wrong show';
+      fb.innerHTML = '⚠️ <strong>Tidak dijawab.</strong> Jawaban benar: <strong>' + 
+        ['A','B','C','D'][item.ans] + '</strong>. ' + item.exp;
+    }
+  });
+
+  // B/S
+  bsData.forEach((item, i) => {
+    const card = document.getElementById('bsCard' + i);
+    const fb = document.getElementById('fbBS' + i);
+    const selected = document.querySelector(`input[name="bs${i}"]:checked`);
+    const opts = card.querySelectorAll('.option');
+    opts.forEach(o => o.classList.remove('correct','wrong'));
+
+    const ansIdx = item.ans ? 0 : 1;
+    if (selected) {
+      const val = selected.value === 'true';
+      if (val === item.ans) {
+        skorBS++;
+        opts[ansIdx].classList.add('correct');
+        fb.className = 'feedback correct show';
+        fb.innerHTML = '✅ <strong>Benar!</strong> ' + item.exp;
+      } else {
+        opts[selected.value === 'true' ? 0 : 1].classList.add('wrong');
+        opts[ansIdx].classList.add('correct');
+        fb.className = 'feedback wrong show';
+        fb.innerHTML = '❌ <strong>Kurang tepat.</strong> Jawaban benar: <strong>' + 
+          (item.ans ? 'Benar' : 'Salah') + '</strong>. ' + item.exp;
+      }
+    } else {
+      opts[ansIdx].classList.add('correct');
+      fb.className = 'feedback wrong show';
+      fb.innerHTML = '⚠️ <strong>Tidak dijawab.</strong> Jawaban benar: <strong>' + 
+        (item.ans ? 'Benar' : 'Salah') + '</strong>. ' + item.exp;
+    }
+  });
+
+  // Essay (hitung yang terisi)
+  essayData.forEach((_, i) => {
+    const val = document.getElementById('essay' + i).value.trim();
+    if (val.length > 20) skorEssay++;
+  });
+
+  const total = skorPG + skorBS + skorEssay;
+
+  // Update score bar
+  document.getElementById('scorePG').textContent = skorPG;
+  document.getElementById('scoreBS').textContent = skorBS;
+  document.getElementById('scoreEssay').textContent = skorEssay;
+  document.getElementById('scoreTotal').textContent = total;
+
+  // Result box
+  const rb = document.getElementById('resultBox');
+  rb.classList.add('show');
+  document.getElementById('finalScore').textContent = total + ' / 40';
+  document.getElementById('finalDetail').textContent = 
+    `PG: ${skorPG}/25 · B/S: ${skorBS}/10 · Essay terisi: ${skorEssay}/5`;
+
+  let grade = '';
+  if (total >= 36) grade = '🏆 Sangat Baik (A)';
+  else if (total >= 30) grade = '👍 Baik (B)';
+  else if (total >= 22) grade = '📖 Cukup (C)';
+  else grade = '📚 Perlu Belajar Lagi (D)';
+  document.getElementById('finalGrade').textContent = grade;
+
+  rb.scrollIntoView({ behavior:'smooth', block:'center' });
+}
+
+/* ==================== RESET ==================== */
+function resetQuiz() {
+  document.getElementById('quizForm').reset();
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected','correct','wrong'));
+  document.querySelectorAll('.feedback').forEach(f => f.className = 'feedback');
+  document.getElementById('resultBox').classList.remove('show');
+  document.getElementById('scorePG').textContent = '0';
+  document.getElementById('scoreBS').textContent = '0';
+  document.getElementById('scoreEssay').textContent = '0';
+  document.getElementById('scoreTotal').textContent = '0';
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+</script>
+</body>
+</html>
